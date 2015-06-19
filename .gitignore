@@ -1,1 +1,6 @@
 *~
+*.xz
+*.changes
+*.dsc
+*.deb
+*.build

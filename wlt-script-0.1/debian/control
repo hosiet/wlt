@@ -1,13 +1,13 @@
-Source: wlt-script-0.1
+Source: wlt-script
 Section: utils
 Priority: optional
 Maintainer: Boyuan Yang <073plan@gmail.com>
 Build-Depends: debhelper (>= 9)
-Standards-Version: 3.9.5
+Standards-Version: 3.9.6
 Homepage: https://github.com/hosiet/wlt-script
 
-Package: wlt-scripts-0.1
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Package: wlt-script
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, curl
 Description: Scripts to log into ustc wlt service
  As said.
