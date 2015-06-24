@@ -12,6 +12,4 @@ all:
 install:
 	install -m 0755 wlt $(DESTDIR)$(bindir)
 	install -m 0644 wlt.1 $(DESTDIR)$(man1dir)
-	if test ! -f $(DESTDIR)$(etcdir)/wlt.conf; then
-	    install -m 0644 wlt.conf $(DESTDIR)$(etcdir)
-	fi
+	if test ! -f $(DESTDIR)$(etcdir)/wlt.conf; then install -m 0644 wlt.conf $(DESTDIR)$(etcdir); fi

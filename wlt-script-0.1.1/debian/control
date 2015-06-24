@@ -9,6 +9,6 @@ Homepage: https://github.com/hosiet/wlt-script
 Package: wlt-script
 Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}, curl
-Recommends: libc-bin
+Recommends: libc-bin (>= 2)
 Description: Scripts to log into ustc wlt service
  As said.
