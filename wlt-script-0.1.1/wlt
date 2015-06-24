@@ -19,20 +19,12 @@
 #
 ##########################################################################
 
-# Default Settings
-# If you want to use default setting, please write down the conf and
-# use '-d' option.
-
-WLT_USERNAME=""
-WLT_PASSWORD=""
-WLT_ISP=""
-WLT_TIME=""
-
 HAVE_ICONV=""
+WLT_CONFIG_FILE="/etc/wlt.conf"
 
 # Strings
 
-WLT_SCRIPT_VERSION="0.1"
+WLT_SCRIPT_VERSION="0.1.1"
 
 WLT_NO_CURL_WARN="Sorry, it seems that you haven't install curl tool.\n\
 Please install curl first."
@@ -41,6 +33,22 @@ WLT_ISP_USEDEFAULT="No valid value found. Using 0 as default."
 WLT_TIME_USEDEFAULT="No valid value found. Using 14400 as default."
 
 # Functions
+
+reset_user_credential()
+{
+    WLT_USERNAME=""
+    WLT_PASSWORD=""
+    WLT_ISP=""
+    WLT_TIME=""
+}
+
+read_user_credential()
+{
+    . ${WLT_CONFIG_FILE}
+    if [ ! "x${EnableDefaultWltCredential}" = "x1" ]; then
+        reset_user_credential
+    fi
+}
 
 print_usage()
 {
@@ -169,6 +177,7 @@ main_function_default()
 
 print_header
 params_init
+reset_user_credential
 
 while getopts ohdu:p:t:e: OPTION
 do
@@ -180,6 +189,7 @@ do
             ;;
         d)
             # use default section
+            read_user_credential
             process_sanity_check
             process_post_curl
             exit 0
