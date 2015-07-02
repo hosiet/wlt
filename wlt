@@ -21,7 +21,7 @@
 
 HAVE_ICONV=""
 WLT_CONFIG_FILE="/etc/wlt.conf"
-WLT_CONFIG_FILE_LOCAL="~/.config/wlt.conf"
+WLT_CONFIG_FILE_LOCAL="$HOME/.config/wlt.conf"
 
 # Strings
 
