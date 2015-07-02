@@ -1,3 +1,10 @@
+wlt-script (0.1.2-1) unstable; urgency=low
+
+  * Import from upstream version.
+  * Upstream: add support for ~/.config/wlt.conf.
+
+ -- Boyuan Yang <073plan@gmail.com>  Thu, 02 Jul 2015 20:51:23 +0800
+
 wlt-script (0.1.1-1) unstable; urgency=low
 
   * Import from upstream version.

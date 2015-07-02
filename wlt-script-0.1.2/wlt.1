@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "WLT" "1" "June 2015" "USTC Linux User Group" "User Commands"
+.TH "WLT" "1" "July 2015" "USTC Linux User Group" "User Commands"
 .\" Workaround added for Chinese display.
 .\" by manpages-zh project
 .\" ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -53,6 +53,21 @@
 .
 .P
 Read the script code for more details\.
+.SH "USAGE"
+.
+.P
+Run the command directly to enter the interactive mode\. Enter the login information as required\.
+.
+.P
+If used with the \fB\-d\fR option, the program will try to load the information provided by \fIwlt.conf\fR file\. The following files may be used:
+.TP
+.B \fI~/\.config/wlt\.conf\fR
+If exist, will be loaded with high priority\.
+.TP
+.B \fI/etc/wlt\.conf\fR
+Only will be loaded if exist and that the former file does not exist\.
+.P
+If both file does not exist, an error will be raised\.
 .
 .SH "EXAMPLES"
 Not provided now\. May be added soon\.
@@ -61,10 +76,11 @@ Not provided now\. May be added soon\.
 The program may misbehave in corner conditions\. So use it at your own risk\.
 .
 .SH "COPYRIGHT"
-Copyright (C) 2015 Boyuan Yang \fIhosiet@mail\.ustc\.edu\.cn\fR
+Copyright (C) 2015 Boyuan Yang \fI<hosiet@mail\.ustc\.edu\.cn>\fR
 .
 .SH "SEE ALSO"
+.P
 curl(1), wget(1)
 .
 .P
-http://wlt\.ustc\.edu\.cn/
+\fIhttp://wlt\.ustc\.edu\.cn/\fR

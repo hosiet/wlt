@@ -10,5 +10,7 @@ Package: wlt-script
 Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}, curl
 Recommends: libc-bin (>= 2)
-Description: Scripts to log into ustc wlt service
- As said.
+Description: Script to log into USTC wlt service
+ This package provide a shell script used to login
+ into the wlt system in USTC (University of Science
+ and Technology of China) wlt network service.

@@ -21,6 +21,7 @@
 
 HAVE_ICONV=""
 WLT_CONFIG_FILE="/etc/wlt.conf"
+WLT_CONFIG_FILE_LOCAL="~/.config/wlt.conf"
 
 # Strings
 
@@ -44,7 +45,14 @@ reset_user_credential()
 
 read_user_credential()
 {
-    . ${WLT_CONFIG_FILE}
+    # load global config file
+    if [ -f $WLT_CONFIG_FILE ]; then
+        . ${WLT_CONFIG_FILE}
+    fi
+    # load user config file (preferred)
+    if [ -f $WLT_CONFIG_FILE_LOCAL ]; then
+        . ${WLT_CONFIG_FILE_LOCAL}
+    fi
     if [ ! "x${EnableDefaultWltCredential}" = "x1" ]; then
         reset_user_credential
     fi
