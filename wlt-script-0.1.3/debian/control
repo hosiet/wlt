@@ -8,9 +8,7 @@ Homepage: https://github.com/hosiet/wlt-script
 
 Package: wlt-script
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, curl
-Recommends: libc-bin (>= 2)
+Depends: ${shlibs:Depends}, ${misc:Depends}, netcat-openbsd, libc-bin (>= 2)
 Description: Script to log into USTC wlt service
- This package provide a shell script used to login
- into the wlt system in USTC (University of Science
- and Technology of China) wlt network service.
+ This package provide a shell script used to login into the wlt system in USTC
+ (University of Science and Technology of China) network service.

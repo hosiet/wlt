@@ -19,16 +19,14 @@
 #
 ##########################################################################
 
-HAVE_ICONV=""
+
 WLT_CONFIG_FILE="/etc/wlt.conf"
 WLT_CONFIG_FILE_LOCAL="$HOME/.config/wlt.conf"
 
 # Strings
 
-WLT_SCRIPT_VERSION="0.1.1"
+WLT_SCRIPT_VERSION="0.1.3"
 
-WLT_NO_CURL_WARN="Sorry, it seems that you haven't install curl tool.\n\
-Please install curl first."
 WLT_SANITY_CHECK_FAILED="Sanity check failed, Invalid wlt parameter encountered."
 WLT_ISP_USEDEFAULT="No valid value found. Using 0 as default."
 WLT_TIME_USEDEFAULT="No valid value found. Using 14400 as default."
@@ -58,46 +56,53 @@ read_user_credential()
     fi
 }
 
+print_ISP_info()
+{
+    printf '
+ Here comes ISP Explanation:
+
+ 1: CERNET with public IP address
+ 2: China Telecom (NAT); routed to CERNET if visiting CERNET website
+ 3: China Unicom (NAT); routed to CERNET if visiting CERNET website
+ 4: China Telecom (NAT); routed to CERNET if visiting CERNET "free" address
+ 5: China Unicom (NAT); routed to CERNET if visiting CERNET "free" address
+ 6: China Telecom (NAT); routed to CERNET if visiting CERNET website; routed to China Unicom (NAT) if visiting China Unicom address
+ 7: China Unicom (NAT); routed to CERNET if visiting CERNET website; routed to China Telecom (NAT) if visiting China Telecom address
+ 8: CERNET; routed to China Telecom (NAT) or China Unicom (NAT) if visiting address within China
+ 9: China Mobile (NAT)
+
+ Visit http://wlt.ustc.edu.cn/link.html for detailed explanation.'
+
+    return
+}
+
 print_usage()
 {
     echo "Usage: $0 [-ohd] (invalid)[upte]"
+    print_ISP_info
     return 0
 }
 
 print_header()
 {
-    echo "USTC WLT Script ${WLT_SCRIPT_VERSION}"
-    echo "Copyright (C) 2015 Boyuan Yang\n"
-    echo "This is free software; see the source for copying conditions.  There is NO\n\
-warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
+    printf "USTC WLT Script ${WLT_SCRIPT_VERSION}\n"
+    printf "Copyright (C) 2015 Boyuan Yang\n\n"
+    printf "This is free software; see the source for copying conditions.  There is NO\n\
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
 }
 
-print_no_curl()
-{
-    echo "${WLT_NO_CURL_WARN}"
-}
-
-print_ISP_info()
-{
-    # FIXME
-    return
-}
-
-params_init()
-{
-    which "iconv" > /dev/null 2>&1
-    if [ "x$?" = "x0" ]; then
-        HAVE_ICONV="Y"
-    else
-        HAVE_ICONV=""
+process_tool_check() {
+    which nc > /dev/null 2>&1
+    if [ ! "x$?" = "x0" ]; then
+        printf "You need nc to run the script.\n"
+        exit 1
     fi
-}
-
-
-process_abort()
-{
-    echo "\nOperation aborted."
-    exit 1
+    which iconv > /dev/null 2>&1
+    if [ ! "x$?" = "x0" ]; then
+        printf "You need iconv to run the script.\n"
+        exit 1
+    fi
+    return 0
 }
 
 ##
@@ -115,32 +120,33 @@ process_sanity_check()
     fi
 }
 
-##
-# 分析结果是否正确
-# FIXME
-process_analyze_result()
-{
-    return 0
-}
+process_post_nc() {
+    readonly WLT_POST_STR_SKEL='POST /cgi-bin/ip HTTP/1.0\r\nUser-Agent: Wlt-script 0.2\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: %s\r\n\r\nname=%s&password=%s&cmd=%s&type=%s&exp=%s'
 
-process_print_success()
-{
-    echo "Operation success.\n"
-    return 0
-}
+    WLT_POST_STR=$(printf "$WLT_POST_STR_SKEL" "$(expr 31 + $(printf \"$WLT_USERNAME\"\"$WLT_PASSWORD\"\"set\"\"$WLT_ISP\"\"$WLT_TIME\" | wc -m))" "$WLT_USERNAME" "$WLT_PASSWORD" "set" "$WLT_ISP" "$WLT_TIME")
 
-process_post_curl()
-{
-    if [ "x${HAVE_ICONV}" = "xY" ]; then
-        curl --data "name=${WLT_USERNAME}&password=${WLT_PASSWORD}&cmd=set&type=${WLT_ISP}&exp=${WLT_TIME}" http://wlt.ustc.edu.cn/cgi-bin/ip | iconv -f GBK -t UTF-8
-    else
-        curl --data "name=${WLT_USERNAME}&password=${WLT_PASSWORD}&cmd=set&type=${WLT_ISP}&exp=${WLT_TIME}" http://wlt.ustc.edu.cn/cgi-bin/ip
+    response=$(printf "$WLT_POST_STR" | nc 202.38.64.59 80 | iconv -f GBK -t UTF-8)
+
+    if [ "x$(echo \"$response\" | grep '请重新登录')" != "x" ]; then
+        printf "Failed login. Possibly wrong username or password.\n"
+        return 1
     fi
-    if [ ! "x$?" = "x0" ]; then
-        process_abort
-    else
-        process_print_success
+    if [ "x$(echo \"$response\" | grep '欢迎使用中国科学技术大学')" != "x" ]; then
+        printf "Failed login. Possibly invalid username or password.\n"
+        return 1
     fi
+
+    if [ ! "x$(printf \"$response\" | grep '网络设置成功')" = "x" ]; then
+        # Unrecognized info
+        printf "ERR: Unrecognized information.\n"
+        return 2
+    else
+        ISP=$(echo "$response" | grep "出口: ")
+        RIGHT=$(echo "$response" | grep "权限: ")
+        printf "Success!\n${ISP}\n${RIGHT}\n"
+        return 0
+    fi
+
 }
 
 main_function_default()
@@ -170,9 +176,9 @@ main_function_default()
     read USERINPUT
     if [ "x${USERINPUT}" = "x" -o "x${USERINPUT}" = "xy" ]; then
         process_sanity_check
-        process_post_curl
+        process_post_nc
     else
-        process_abort
+        exit 1
     fi
 
 }
@@ -184,7 +190,6 @@ main_function_default()
 # :oh means bash deal
 
 print_header
-params_init
 reset_user_credential
 
 while getopts ohdu:p:t:e: OPTION
@@ -199,7 +204,7 @@ do
             # use default section
             read_user_credential
             process_sanity_check
-            process_post_curl
+            process_post_nc
             exit 0
             ;;
         o)
@@ -211,13 +216,6 @@ do
             ;;
     esac
 done
-
-
-which "curl" > /dev/null 2>&1
-if [ ! "x$?" = "x0" ]; then
-    print_no_curl
-    exit 1
-fi
 
 main_function_default
 exit 0

@@ -1,3 +1,10 @@
+wlt-script (0.1.3-1) unstable; urgency=medium
+
+  * Drop curl dependency; now uses netcat-openbsd instead.
+  * Now depend on libc-bin, which provides iconv.
+
+ -- Boyuan Yang <073plan@gmail.com>  Wed, 09 Sep 2015 17:35:23 +0800
+
 wlt-script (0.1.2-2) unstable; urgency=medium
 
   * Fix bug that '~' is not recognized.
