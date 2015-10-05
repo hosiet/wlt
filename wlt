@@ -27,8 +27,8 @@ WLT_CONFIG_FILE_LOCAL="$HOME/.config/wlt.conf"
 
 WLT_SCRIPT_VERSION="0.1.1"
 
-WLT_NO_CURL_WARN="Sorry, it seems that you haven't install curl tool.\n\
-Please install curl first."
+WLT_NO_WGET_WARN="Sorry, it seems that you haven't install wget tool.\n\
+Please install wget first."
 WLT_SANITY_CHECK_FAILED="Sanity check failed, Invalid wlt parameter encountered."
 WLT_ISP_USEDEFAULT="No valid value found. Using 0 as default."
 WLT_TIME_USEDEFAULT="No valid value found. Using 14400 as default."
@@ -72,9 +72,9 @@ print_header()
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 }
 
-print_no_curl()
+print_no_wget()
 {
-    echo "${WLT_NO_CURL_WARN}"
+    echo "${WLT_NO_WGET_WARN}"
 }
 
 print_ISP_info()
@@ -129,12 +129,12 @@ process_print_success()
     return 0
 }
 
-process_post_curl()
+process_post_wget()
 {
     if [ "x${HAVE_ICONV}" = "xY" ]; then
-        curl --data "name=${WLT_USERNAME}&password=${WLT_PASSWORD}&cmd=set&type=${WLT_ISP}&exp=${WLT_TIME}" http://wlt.ustc.edu.cn/cgi-bin/ip | iconv -f GBK -t UTF-8
+        wget --post-data "name=${WLT_USERNAME}&password=${WLT_PASSWORD}&cmd=set&type=${WLT_ISP}&exp=${WLT_TIME}" http://wlt.ustc.edu.cn/cgi-bin/ip -O - | iconv -f GBK -t UTF-8
     else
-        curl --data "name=${WLT_USERNAME}&password=${WLT_PASSWORD}&cmd=set&type=${WLT_ISP}&exp=${WLT_TIME}" http://wlt.ustc.edu.cn/cgi-bin/ip
+        wget --post-data "name=${WLT_USERNAME}&password=${WLT_PASSWORD}&cmd=set&type=${WLT_ISP}&exp=${WLT_TIME}" http://wlt.ustc.edu.cn/cgi-bin/ip -O -
     fi
     if [ ! "x$?" = "x0" ]; then
         process_abort
@@ -170,7 +170,7 @@ main_function_default()
     read USERINPUT
     if [ "x${USERINPUT}" = "x" -o "x${USERINPUT}" = "xy" ]; then
         process_sanity_check
-        process_post_curl
+        process_post_wget
     else
         process_abort
     fi
@@ -199,7 +199,7 @@ do
             # use default section
             read_user_credential
             process_sanity_check
-            process_post_curl
+            process_post_wget
             exit 0
             ;;
         o)
@@ -213,9 +213,9 @@ do
 done
 
 
-which "curl" > /dev/null 2>&1
+which "wget" > /dev/null 2>&1
 if [ ! "x$?" = "x0" ]; then
-    print_no_curl
+    print_no_wget
     exit 1
 fi
 
