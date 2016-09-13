@@ -10,7 +10,7 @@ Vcs-Browser: https://github.com/hosiet/wlt
 
 Package: wlt
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, curl
+Depends: ${misc:Depends}, curl
 Description: Script to log into USTC wlt service
  This package provide a shell script used to login
  into the wlt system in USTC (University of Science

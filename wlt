@@ -25,7 +25,7 @@ WLT_CONFIG_FILE_LOCAL="$HOME/.config/wlt.conf"
 
 # Strings
 
-WLT_SCRIPT_VERSION="0.1.1"
+WLT_SCRIPT_VERSION="0.2"
 
 WLT_NO_WGET_WARN="Sorry, it seems that you haven't install wget tool.\n\
 Please install wget first."
