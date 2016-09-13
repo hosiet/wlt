@@ -1,23 +1,29 @@
-wlt-script (0.1.2-3) unstable; urgency=low
+wlt (0.2) unstable; urgency=medium
+
+  * Repack as debian native package.
+
+ -- Boyuan Yang <073plan@gmail.com>  Tue, 13 Sep 2016 19:00:35 +0800
+
+wlt (0.1.2-3) unstable; urgency=low
 
   * Repack
 
  -- Boyuan Yang <073plan@gamil.com>  Mon, 14 Mar 2016 22:16:22 +0800
 
-wlt-script (0.1.2-2) unstable; urgency=medium
+wlt (0.1.2-2) unstable; urgency=medium
 
   * Fix bug that '~' is not recognized.
 
  -- Boyuan Yang <073plan@gmail.com>  Thu, 02 Jul 2015 21:07:03 +0800
 
-wlt-script (0.1.2-1) unstable; urgency=low
+wlt (0.1.2-1) unstable; urgency=low
 
   * Import from upstream version.
   * Upstream: add support for ~/.config/wlt.conf.
 
  -- Boyuan Yang <073plan@gmail.com>  Thu, 02 Jul 2015 20:51:23 +0800
 
-wlt-script (0.1.1-1) unstable; urgency=low
+wlt (0.1.1-1) unstable; urgency=low
 
   * Import from upstream version.
   * Upstream: added wlt.conf to enable `wlt -d'.
@@ -25,13 +31,13 @@ wlt-script (0.1.1-1) unstable; urgency=low
 
  -- Boyuan Yang <073plan@gmail.com>  Wed, 24 Jun 2015 17:41:32 +0800
 
-wlt-script (0.1-2) unstable; urgency=low
+wlt (0.1-2) unstable; urgency=low
 
   * Update packaging script to fix lintian warnings.
 
  -- Boyuan Yang <073plan@gmail.com>  Fri, 19 Jun 2015 11:38:01 +0800
 
-wlt-script (0.1-1) unstable; urgency=low
+wlt (0.1-1) unstable; urgency=low
 
   * Initial release (Closes: #1)
   * The #1 does not exist, FYI.

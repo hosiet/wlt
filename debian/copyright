@@ -1,14 +1,14 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: wlt-script
-Upstream-Contact: Boyuan Yang <hosiet@mail.ustc.edu.cn>
-Source: https://github.com/hosiet/wlt-script
+Upstream-Name: wlt
+Upstream-Contact: Boyuan Yang <073plan@gmail.com>
+Source: https://github.com/hosiet/wlt
 
 Files: *
-Copyright: 2014-2015 Boyuan Yang <073plan@gmail.com>
+Copyright: 2014-2016 Boyuan Yang <073plan@gmail.com>
 License: GPL-3+
 
 Files: debian/*
-Copyright: 2015 Boyuan Yang <073plan@gmail.com>
+Copyright: 2015-2016 Boyuan Yang <073plan@gmail.com>
 License: GPL-3+
 
 License: GPL-3+

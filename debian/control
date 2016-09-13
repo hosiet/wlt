@@ -1,15 +1,16 @@
-Source: wlt-script
+Source: wlt
 Section: utils
 Priority: optional
 Maintainer: Boyuan Yang <073plan@gmail.com>
 Build-Depends: debhelper (>= 9)
-Standards-Version: 3.9.6
-Homepage: https://github.com/hosiet/wlt-script
+Standards-Version: 3.9.8
+Homepage: https://github.com/hosiet/wlt
+Vcs-Git: https://github.com/hosiet/wlt.git
+Vcs-Browser: https://github.com/hosiet/wlt
 
-Package: wlt-script
+Package: wlt
 Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}, curl
-Recommends: libc-bin (>= 2)
 Description: Script to log into USTC wlt service
  This package provide a shell script used to login
  into the wlt system in USTC (University of Science
